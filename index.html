@@ -160,14 +160,31 @@ body::before {
         width: 90%;
       }
     }
+.teamspeak-link {
+  display: inline-block;
+  margin-top: 10px;
+  background: #656768;
+  color: #000000;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.2);
+  transition: background 0.3s ease;
+}
+.teamspeak-link:hover {
+  background: #848485;
+}
   </style>
 </head>
 <body>
+
   <div class="title-card">
     <h1>WHAT UNIVERSAL</h1>
     <div class="subtitle">REAL TIME TRACKER</div>
     <div class="refresh-info" id="refreshNotice">DEV BY JUTI STORY</div>
     <div class="timestamp" id="time">กำลังโหลด...</div>
+    <a href="ts3server://dekhudbad" class="teamspeak-link" target="_blank">เข้าTeamspeak</a>
   </div>
 
   <div class="main-layout">
