@@ -18,21 +18,20 @@
       padding: 30px 20px;
     }
 
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://img5.pic.in.th/file/secure-sv1/image5df7f9940d654c2a.th.png');
-  background-size: 1200px; 
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.05;
-  filter: grayscale(100%) brightness(0.5) blur(1px);
-  z-index: -1;
-}
-
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://img5.pic.in.th/file/secure-sv1/image5df7f9940d654c2a.th.png');
+      background-size: 1200px; 
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.05;
+      filter: grayscale(100%) brightness(0.5) blur(1px);
+      z-index: -1;
+    }
 
     .title-card {
       text-align: center;
@@ -95,7 +94,7 @@ body::before {
       color: #dddddd;
     }
 
-    #timelineList {
+    #timelineList, #timelineLeft {
       max-height: 320px;
       overflow-y: auto;
       font-size: 0.95rem;
@@ -160,21 +159,23 @@ body::before {
         width: 90%;
       }
     }
-.teamspeak-link {
-  display: inline-block;
-  margin-top: 10px;
-  background: #656768;
-  color: #000000;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  border-radius: 8px;
-  text-decoration: none;
-  box-shadow: 0 0 8px rgba(33, 150, 243, 0.2);
-  transition: background 0.3s ease;
-}
-.teamspeak-link:hover {
-  background: #848485;
-}
+
+    .teamspeak-link {
+      display: inline-block;
+      margin-top: 10px;
+      background: #656768;
+      color: #000000;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 0 8px rgba(33, 150, 243, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    .teamspeak-link:hover {
+      background: #848485;
+    }
   </style>
 </head>
 <body>
@@ -196,6 +197,11 @@ body::before {
     <div class="panel">
       <h3>LOG เข้าเซิฟเวอร์</h3>
       <div id="timelineList"></div>
+    </div>
+
+    <div class="panel">
+      <h3>LOG ออกจากเซิฟเวอร์</h3>
+      <div id="timelineLeft"></div>
     </div>
 
     <div class="panel online">
@@ -223,12 +229,19 @@ body::before {
 
     document.getElementById("clearTimeline").addEventListener("click", () => {
       localStorage.removeItem("timelineLog");
+      localStorage.removeItem("timelineLeftLog");
       updateTimelineDisplay();
+      updateTimelineLeftDisplay();
     });
 
     function updateTimelineDisplay() {
       const timeline = JSON.parse(localStorage.getItem("timelineLog") || "[]");
       document.getElementById("timelineList").innerHTML = timeline.slice(0, 30).map(item => `<div>${item}</div>`).join('');
+    }
+
+    function updateTimelineLeftDisplay() {
+      const timelineLeft = JSON.parse(localStorage.getItem("timelineLeftLog") || "[]");
+      document.getElementById("timelineLeft").innerHTML = timelineLeft.slice(0, 30).map(item => `<div>${item}</div>`).join('');
     }
 
     async function sendWebhook(message) {
@@ -261,6 +274,7 @@ body::before {
         const newPlayers = newOnline.filter(n => !previousOnline.includes(n));
 
         const timeline = JSON.parse(localStorage.getItem("timelineLog") || "[]");
+        const timelineLeft = JSON.parse(localStorage.getItem("timelineLeftLog") || "[]");
         const now = new Date().toLocaleTimeString('th-TH', { timeZone: 'Asia/Bangkok' });
 
         for (const name of newPlayers) {
@@ -273,8 +287,20 @@ body::before {
           }
         }
 
+        for (const name of gonePlayers) {
+          const msg = `🔴 ${name} ออกจากเซิร์ฟ - ${now}`;
+          timelineLeft.unshift(msg);
+          if (audioEnabled) document.getElementById("alertSound").play();
+          if (!alreadyNotified.has(name + "_left")) {
+            sendWebhook(msg);
+            alreadyNotified.add(name + "_left");
+          }
+        }
+
         localStorage.setItem("timelineLog", JSON.stringify(timeline.slice(0, 100)));
+        localStorage.setItem("timelineLeftLog", JSON.stringify(timelineLeft.slice(0, 100)));
         updateTimelineDisplay();
+        updateTimelineLeftDisplay();
 
         previousOnline = newOnline;
         document.getElementById("time").innerText = `อัปเดต: ${new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}`;
@@ -303,6 +329,7 @@ body::before {
         watchList = config.watchList || [];
         webhookUrl = config.webhookUrl || "";
         updateTimelineDisplay();
+        updateTimelineLeftDisplay();
         checkPlayers();
         setInterval(checkPlayers, 3000);
       } catch (err) {
