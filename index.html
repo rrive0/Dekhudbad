@@ -6,16 +6,13 @@
   <title> DEKHUDBAD WHAT UNIVERSAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Prompt', sans-serif;
-      background-color: #121212;
+      background-color: #0f0f0f;
       color: #eaeaea;
       padding: 30px 20px;
+      overflow-x: hidden;
     }
 
     body::before {
@@ -25,157 +22,161 @@
       width: 100%;
       height: 100%;
       background-image: url('https://img5.pic.in.th/file/secure-sv1/image5df7f9940d654c2a.th.png');
-      background-size: 1200px; 
+      background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      opacity: 0.05;
-      filter: grayscale(100%) brightness(0.5) blur(1px);
+      opacity: 0.04;
+      filter: grayscale(100%) brightness(0.3) blur(2px);
       z-index: -1;
     }
 
     .title-card {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
+      text-shadow: 0 0 12px rgba(0,255,255,0.1);
     }
 
     .title-card h1 {
-      font-size: 2.4rem;
-      color: #ffffff;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+      font-size: 2.8rem;
+      color: #00fff7;
+      background: linear-gradient(120deg, #00fff7, #ff00f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
     }
 
     .subtitle {
-      font-size: 1.1rem;
-      color: #b0b0b0;
+      font-size: 1.2rem;
+      color: #aaa;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
     }
 
     .refresh-info, .timestamp {
       font-size: 0.95rem;
       color: #888;
-      text-align: center;
-      margin-top: 10px;
+      margin-top: 8px;
+    }
+
+    .teamspeak-link {
+      display: inline-block;
+      margin-top: 12px;
+      background: linear-gradient(90deg, #ff00f7, #00fff7);
+      color: #000;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .teamspeak-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,0,255,0.5);
     }
 
     .main-layout {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 30px;
+      gap: 25px;
       flex-wrap: wrap;
     }
 
     .panel {
-      background: #1e1e1e;
-      border-radius: 14px;
+      background: linear-gradient(145deg, #181818, #1c1c1c);
+      border-radius: 16px;
       border: 1px solid #333;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.04);
-      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.05);
+      padding: 22px;
       width: 320px;
       min-height: 400px;
-      transition: transform 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
     .panel:hover {
-      transform: translateY(-2px);
+      transform: translateY(-4px);
+      box-shadow: 0 0 25px rgba(0,255,255,0.2);
     }
 
     .panel h3 {
-      font-size: 1.2rem;
-      margin-bottom: 16px;
-      padding: 10px;
-      border-radius: 8px;
+      font-size: 1.25rem;
+      margin-bottom: 18px;
+      padding: 12px;
+      border-radius: 12px;
       background: #2a2a2a;
-      color: #ffffff;
+      color: #00fff7;
       text-align: center;
+      text-shadow: 0 0 4px #0ff;
     }
 
     .offline h3 {
       background: #2f2f2f;
-      color: #dddddd;
+      color: #ff4c4c;
+      text-shadow: 0 0 6px #ff4c4c;
     }
 
     #timelineList, #timelineLeft {
       max-height: 320px;
       overflow-y: auto;
       font-size: 0.95rem;
-      line-height: 1.5;
-      padding-left: 10px;
-      color: #dddddd;
+      line-height: 1.6;
+      padding-left: 6px;
+      color: #ddd;
     }
 
     .player-card {
-      background: #252525;
-      border-left: 4px solid #555;
-      padding: 10px 12px;
-      border-radius: 10px;
+      background: #222;
+      border-left: 5px solid #00fff7;
+      padding: 12px 14px;
+      border-radius: 12px;
       margin-bottom: 10px;
       font-size: 0.95rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .player-card:hover {
+      transform: translateX(3px);
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
     }
 
-    .offline .player-card {
-      background: #2c2c2c;
-      border-left-color: #777;
-    }
+    .offline .player-card { border-left-color: #ff4c4c; background: #2c2c2c; }
 
-    .player-name {
-      font-weight: bold;
-      color: #f0f0f0;
-    }
-
-    .player-meta {
-      font-size: 0.85rem;
-      color: #a9a9a9;
-    }
+    .player-name { font-weight: bold; color: #fff; }
+    .player-meta { font-size: 0.85rem; color: #aaa; margin-top: 4px; }
 
     #toggleAudio, #clearTimeline {
       position: fixed;
       right: 20px;
       z-index: 999;
-      background: #ffffff;
+      background: linear-gradient(135deg, #00fff7, #ff00f7);
       border: none;
-      color: #121212;
-      padding: 10px 16px;
+      color: #000;
+      padding: 10px 18px;
       font-size: 0.85rem;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-      transition: background 0.2s ease;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-weight: bold;
     }
-
-    #toggleAudio:hover, #clearTimeline:hover {
-      background: #e0e0e0;
-    }
+    #toggleAudio:hover, #clearTimeline:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,0,255,0.3); }
 
     #toggleAudio { bottom: 80px; }
     #clearTimeline { bottom: 25px; }
 
     @media (max-width: 960px) {
-      .main-layout {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .panel {
-        width: 90%;
-      }
+      .main-layout { flex-direction: column; align-items: center; }
+      .panel { width: 90%; }
     }
 
-    .teamspeak-link {
-      display: inline-block;
-      margin-top: 10px;
-      background: #656768;
-      color: #000000;
-      padding: 8px 16px;
-      font-size: 0.9rem;
-      border-radius: 8px;
-      text-decoration: none;
-      box-shadow: 0 0 8px rgba(33, 150, 243, 0.2);
-      transition: background 0.3s ease;
+    ::-webkit-scrollbar {
+      width: 6px;
     }
-
-    .teamspeak-link:hover {
-      background: #848485;
+    ::-webkit-scrollbar-thumb {
+      background: #00fff7;
+      border-radius: 3px;
     }
+    ::-webkit-scrollbar-track { background: #121212; }
   </style>
 </head>
 <body>
@@ -341,3 +342,4 @@
   </script>
 </body>
 </html>
+
